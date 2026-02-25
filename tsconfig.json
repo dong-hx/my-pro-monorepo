@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowJs": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "eslint.config.mjs",
+    "commitlint.config.js",
+    "*.config.ts",
+    "packages/*/eslint.config.mjs",
+    "apps/*/eslint.config.mjs"
+  ]
+}
