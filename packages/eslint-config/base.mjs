@@ -31,19 +31,6 @@ export const baseConfig = [
     },
   },
 
-  // {
-  //   // 🚀 重点 2：针对所有的配置文件，使用通用的“豁免”逻辑
-  //   files: ['**/*.config.{js,mjs,ts}', '.eslint.config.mjs'],
-  //   languageOptions: {
-  //     parser: tseslint.parser,
-  //     parserOptions: {
-  //       projectService: {
-  //         allowDefaultProject: ['*.config.*', '.*.js'], // 模糊匹配，一劳永逸
-  //       },
-  //     },
-  //   },
-  // },
-
   // 3. 🛡️ 永远把 Prettier 放在数组最后！
   // 它的作用是强行关闭所有和 Prettier 冲突的 ESLint 格式化规则
   prettierConfig,
