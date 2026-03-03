@@ -1,7 +1,6 @@
 packages:
   - 'apps/*' # 存放具体的业务项目（如 admin, web）
   - 'packages/*' # 存放一级公共库（如 utils, components）
-  - 'packages/*/*' # 存放二级公共库（如 config/typescript）
 
 catalogs:
   default:
