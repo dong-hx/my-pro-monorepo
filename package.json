@@ -4,12 +4,20 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "turbo build",
-    "preview": "turbo preview",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "test": "turbo test",
-    "clean": "turbo clean && rm -rf node_modules",
+    "build:dev": "cross-env APP_MODE=development NODE_ENV=production turbo run build",
+    "build:staging": "cross-env APP_MODE=staging NODE_ENV=production turbo run build",
+    "build:prod": "cross-env APP_MODE=production NODE_ENV=production turbo run build",
+    "preview:dev": "cross-env APP_MODE=development NODE_ENV=production turbo run preview",
+    "preview:staging": "cross-env APP_MODE=staging NODE_ENV=production turbo run preview",
+    "preview:prod": "cross-env APP_MODE=production NODE_ENV=production turbo run preview",
+    "dev": "cross-env APP_MODE=development NODE_ENV=development turbo run dev",
+    "dev:staging": "cross-env APP_MODE=staging NODE_ENV=development turbo run dev",
+    "dev:prod": "cross-env APP_MODE=production NODE_ENV=development turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo clean && rimraf \"apps/*/dist\" \"packages/*/dist\"",
+    "clean:cache": "pnpm clean && rimraf \"**/.turbo\" \"**/.cache\" \"**/.next\"",
+    "clean:reset": "pnpm clean:cache && rimraf \"**/node_modules\" pnpm-lock.yaml",
     "prepare": "husky"
   },
   "packageManager": "pnpm@10.30.2",
@@ -21,11 +29,13 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "cross-env": "^10.1.0",
     "eslint": "^9.39.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "turbo": "^2.8.10"
+    "rimraf": "^6.1.3",
+    "turbo": "^2.8.13"
   }
 }

@@ -7,15 +7,24 @@ import { defineConfig } from 'vite'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-export default defineConfig({
-  plugins: [tailwindcss(), react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+export default defineConfig(({ mode }) => {
+  const isStaging = mode === 'staging'
+  const isProduction = mode === 'production'
+  const enableSourceMap = isStaging || isProduction
+
+  return {
+    plugins: [tailwindcss(), react()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
     },
-  },
-  preview: {
-    port: 3000,
-    strictPort: true,
-  },
+    build: {
+      sourcemap: enableSourceMap,
+    },
+    preview: {
+      port: 3000,
+      strictPort: true,
+    },
+  }
 })

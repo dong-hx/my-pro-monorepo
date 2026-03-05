@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint ."
+    "build": "vite build --mode $APP_MODE",
+    "preview": "vite preview --mode $APP_MODE",
+    "lint": "eslint .",
+    "clean": "rimraf dist .turbo"
   },
   "dependencies": {
     "@hookform/resolvers": "catalog:",
