@@ -1,0 +1,47 @@
+{
+  "name": "api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "lint": "eslint .",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config ./jest.config.mjs",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --config ./jest.config.mjs --watch",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "clean": "rimraf dist .turbo"
+  },
+  "dependencies": {
+    "@nestjs/common": "9.4.3",
+    "@nestjs/config": "^2.3.4",
+    "@nestjs/core": "9.4.3",
+    "@nestjs/platform-express": "9.4.3",
+    "@prisma/adapter-pg": "catalog:",
+    "@prisma/client": "catalog:",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "pg": "catalog:",
+    "reflect-metadata": "^0.1.14",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "9.3.0",
+    "@nestjs/schematics": "9.2.0",
+    "@nestjs/testing": "9.4.3",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/jest": "catalog:",
+    "@types/node": "catalog:",
+    "@types/pg": "catalog:",
+    "@types/supertest": "catalog:",
+    "jest": "catalog:",
+    "prisma": "catalog:",
+    "supertest": "catalog:",
+    "ts-jest": "catalog:",
+    "typescript": "catalog:"
+  }
+}
