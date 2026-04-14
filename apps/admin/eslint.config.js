@@ -1,11 +1,15 @@
-import rootConfig from "../../eslint.config.js";
+import { reactConfig } from '@repo/eslint-config/react'
 
 export default [
-  ...rootConfig,
-  // 如果 admin 项目有特殊的规则，写在这里覆盖即可
   {
+    ignores: ['**/node_modules/**', '**/dist/**', '**/.turbo/**', '**/build/**'],
+  },
+  ...reactConfig,
+  {
+    name: 'admin/local-overrides',
+    files: ['**/*.{ts,tsx}'],
     rules: {
-      "no-console": "off" // 比如后台系统允许 console
-    }
-  }
-];
+      'no-console': 'off',
+    },
+  },
+]

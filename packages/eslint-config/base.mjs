@@ -1,6 +1,5 @@
 import js from '@eslint/js'
 import prettierConfig from 'eslint-config-prettier'
-import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 /** @type {import('eslint').Linter.Config[]} */
@@ -15,10 +14,6 @@ export const baseConfig = [
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
       parser: tseslint.parser,
       parserOptions: {
         projectService: true, // 开启 V8 极速模式

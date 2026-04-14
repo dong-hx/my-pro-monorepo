@@ -1,0 +1,15 @@
+---
+description: Monorepo 全局工程约束
+globs:
+  - "apps/**"
+  - "packages/**"
+alwaysApply: true
+---
+
+- 仅允许 `apps/*` 依赖 `packages/*`，禁止应用间直接依赖。
+- 共享逻辑优先沉淀到 `packages/*`，业务逻辑禁止进入 `packages/ui`。
+- 新增依赖时优先使用 workspace 内复用与 `catalog` 版本。
+- 目录命名遵循 `kebab-case`，React 组件文件用 `kebab-case.tsx`，导出符号用 `PascalCase`。
+- 禁止跨层反向依赖：`shared` 不能 import `features`，`features` 不能 import `app`。
+- 提交前至少执行 `pnpm lint`；涉及接口或模型变更需补测试。
+- 不在页面组件中直接写 HTTP 请求，统一通过 `features/*/api` 封装。

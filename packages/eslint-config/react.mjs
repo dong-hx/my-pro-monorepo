@@ -1,6 +1,7 @@
 import reactPlugin from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals'
 
 import { baseConfig } from './base.mjs';
 
@@ -16,6 +17,9 @@ export const reactConfig = [
       'react-refresh': reactRefresh,
     },
     languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },

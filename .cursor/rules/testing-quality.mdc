@@ -1,0 +1,12 @@
+---
+description: 测试与质量门禁
+globs:
+  - "apps/**"
+alwaysApply: true
+---
+
+- 新增业务逻辑时优先补单测：前端用 Vitest，后端用 Jest。
+- 关键业务流（登录、权限、核心 CRUD）应补 E2E 覆盖（Playwright）。
+- 修复 bug 时至少包含一个能复现问题的测试用例。
+- PR 合并前至少通过 `pnpm lint` 与受影响应用的 `pnpm test`。
+- lint/test 失败时先修复本次改动引入的问题，再处理历史问题。

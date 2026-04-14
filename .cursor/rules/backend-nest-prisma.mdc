@@ -1,0 +1,13 @@
+---
+description: API NestJS + Prisma 约束
+globs:
+  - "apps/api/src/**/*.ts"
+alwaysApply: true
+---
+
+- 控制器仅负责请求参数与响应对象，业务编排放到 service。
+- 数据访问统一走 PrismaService；复杂领域优先新增 repository 层，禁止 controller 直接访问数据库。
+- DTO 必须加校验装饰器，依赖全局 ValidationPipe 进行请求校验。
+- 模块按 `modules/<domain>` 组织，保持 controller/service/dto 分层。
+- 统一异常处理使用 Nest ExceptionFilter 或 HttpException，禁止直接返回裸错误对象。
+- 任何 Prisma 模型变更都应包含 migration、`prisma generate` 与回归测试。
