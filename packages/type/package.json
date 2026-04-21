@@ -1,0 +1,29 @@
+{
+  "name": "@repo/type",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "types": "./auth/auth.types.ts",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "@repo/typescript-config": "workspace:*",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "exports": {
+    ".": {
+      "types": "./auth/auth.types.ts",
+      "default": "./auth/auth.types.ts"
+    },
+    "./auth": {
+      "types": "./auth/auth.types.ts",
+      "default": "./auth/auth.types.ts"
+    }
+  }
+}

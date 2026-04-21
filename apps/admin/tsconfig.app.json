@@ -5,7 +5,8 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@repo/type": ["../../packages/type/auth/auth.types.ts"]
     }
   },
   "include": ["src"]

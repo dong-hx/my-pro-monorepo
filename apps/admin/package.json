@@ -14,6 +14,7 @@
     "clean": "rimraf dist .turbo"
   },
   "dependencies": {
+    "@repo/type": "workspace:*",
     "@repo/ui": "workspace:*",
     "@hookform/resolvers": "catalog:",
     "@tanstack/react-query": "catalog:",

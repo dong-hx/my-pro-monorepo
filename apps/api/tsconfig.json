@@ -5,7 +5,11 @@
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@repo/type": ["./src/types/repo-type.d.ts"]
+    },
+    "types": ["node", "jest"],
     "rootDir": "src",
     "outDir": "dist",
     "emitDecoratorMetadata": true,
@@ -13,6 +17,6 @@
     "sourceMap": true,
     "incremental": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "src/**/*.spec.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist"]
 }
