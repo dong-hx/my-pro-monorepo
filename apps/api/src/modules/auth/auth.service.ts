@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -60,15 +61,17 @@ export class AuthService {
       where: { email: dto.email.toLowerCase() },
     })
 
-    const invalid = new UnauthorizedException('邮箱或密码不正确')
+    if (!user) {
+      throw new NotFoundException('该邮箱未注册')
+    }
 
-    if (!user?.passwordHash) {
-      throw invalid
+    if (!user.passwordHash) {
+      throw new UnauthorizedException('该账号未设置密码，无法使用密码登录')
     }
 
     const ok = bcrypt.compareSync(dto.password, user.passwordHash)
     if (!ok) {
-      throw invalid
+      throw new UnauthorizedException('密码错误')
     }
 
     return this.buildTokenResponse({

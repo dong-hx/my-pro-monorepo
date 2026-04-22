@@ -1,14 +1,14 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
+import type { UserRole } from '@repo/type'
+
 import { useAuthStore } from '@/features/auth/store/auth-store'
 
-type Role = 'admin' | 'editor' | 'viewer'
-
 interface AuthGuardProps {
-  requiredRole?: Role
+  requiredRole?: UserRole
 }
 
-const roleRank: Record<Role, number> = {
+const roleRank: Record<UserRole, number> = {
   viewer: 1,
   editor: 2,
   admin: 3,

@@ -5,5 +5,5 @@
     "noEmit": true,
     "rootDir": "."
   },
-  "include": ["./auth/**/*.ts"]
+  "include": ["./index.ts", "./auth/**/*.ts", "./user/**/*.ts"]
 }

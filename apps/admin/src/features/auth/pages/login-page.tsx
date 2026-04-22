@@ -1,21 +1,24 @@
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Alert, Button, Card, Form, Input, Typography } from 'antd'
+import { Button, Card, Form, Input, Typography } from 'antd'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { useLoginMutation } from '../api/use-login-mutation'
 import { type LoginSchemaInput, loginSchema } from '../schemas/login.schema'
 import { useAuthStore } from '../store/auth-store'
 
 export const LoginPage = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const loginAsDemoUser = useAuthStore((state) => state.loginAsDemoUser)
+  const setAuthFromLogin = useAuthStore((state) => state.setAuthFromLogin)
+  const loginMutation = useLoginMutation()
   const redirectPath = (location.state as { from?: string } | null)?.from ?? '/'
 
   const {
-    register,
+    clearErrors,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginSchemaInput>({
@@ -26,9 +29,15 @@ export const LoginPage = () => {
     },
   })
 
-  const onSubmit = async () => {
-    loginAsDemoUser('admin')
-    navigate(redirectPath, { replace: true })
+  const onSubmit = async (data: LoginSchemaInput) => {
+    clearErrors()
+    try {
+      const res = await loginMutation.mutateAsync(data)
+      setAuthFromLogin(res)
+      navigate(redirectPath, { replace: true })
+    } catch {
+      // 接口错误文案由 `httpClient` 响应拦截器统一 `message.error` 展示
+    }
   }
 
   return (
@@ -41,35 +50,46 @@ export const LoginPage = () => {
           基于 RHF + Zod 的登录表单示例
         </Typography.Paragraph>
 
-        <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
-          <Form.Item
-            label="邮箱"
-            required
-            validateStatus={errors.email ? 'error' : undefined}
-            help={errors.email?.message}
-          >
-            <Input placeholder="demo@company.com" {...register('email')} />
-          </Form.Item>
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <Form layout="vertical" component={false}>
+            <Form.Item
+              label="邮箱"
+              required
+              validateStatus={errors.email ? 'error' : undefined}
+              help={errors.email?.message}
+            >
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => <Input placeholder="demo@company.com" {...field} />}
+              />
+            </Form.Item>
 
-          <Form.Item
-            label="密码"
-            required
-            validateStatus={errors.password ? 'error' : undefined}
-            help={errors.password?.message}
-          >
-            <Input.Password placeholder="至少 8 位" {...register('password')} />
-          </Form.Item>
+            <Form.Item
+              label="密码"
+              required
+              validateStatus={errors.password ? 'error' : undefined}
+              help={errors.password?.message}
+            >
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => <Input.Password placeholder="至少 8 位" {...field} />}
+              />
+            </Form.Item>
 
-          {errors.root?.message ? (
-            <Alert message={errors.root.message} showIcon type="error" />
-          ) : null}
-
-          <Form.Item style={{ marginTop: 16 }}>
-            <Button block htmlType="submit" loading={isSubmitting} type="primary">
-              登录
-            </Button>
-          </Form.Item>
-        </Form>
+            <Form.Item style={{ marginTop: 16 }}>
+              <Button
+                block
+                htmlType="submit"
+                loading={isSubmitting || loginMutation.isPending}
+                type="primary"
+              >
+                登录
+              </Button>
+            </Form.Item>
+          </Form>
+        </form>
       </Card>
     </main>
   )

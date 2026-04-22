@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@repo/type": ["../../packages/type/auth/auth.types.ts"]
+      "@repo/type": ["../../packages/type/index.ts"]
     }
   },
   "include": ["src"]

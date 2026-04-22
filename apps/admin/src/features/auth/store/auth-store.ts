@@ -1,28 +1,32 @@
 import { create } from 'zustand'
 
-type Role = 'admin' | 'editor' | 'viewer'
+import type { LoginResponse, UserBrief } from '@repo/type'
 
-interface CurrentUser {
-  id: string
-  name: string
-  role: Role
-}
+import { setHttpAuthToken } from '@/shared/api/http-client'
 
 interface AuthState {
-  currentUser: CurrentUser | null
-  loginAsDemoUser: (role?: Role) => void
+  accessToken: string | null
+  currentUser: UserBrief | null
+  setAuthFromLogin: (response: LoginResponse) => void
   logout: () => void
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
+  accessToken: null,
   currentUser: null,
-  loginAsDemoUser: (role = 'admin') =>
+  setAuthFromLogin: (response) => {
+    setHttpAuthToken(response.accessToken)
     set({
+      accessToken: response.accessToken,  
       currentUser: {
-        id: 'demo-user-id',
-        name: 'Demo User',
-        role,
+        id: response.user.id,
+        name: response.user.name,
+        role: response.user.role,
       },
-    }),
-  logout: () => set({ currentUser: null }),
+    })
+  },
+  logout: () => {
+    setHttpAuthToken(null)
+    set({ accessToken: null, currentUser: null })
+  },
 }))

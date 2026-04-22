@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "sideEffects": false,
-  "types": "./auth/auth.types.ts",
+  "types": "./index.ts",
   "scripts": {
     "lint": "eslint ."
   },
@@ -18,12 +18,16 @@
   },
   "exports": {
     ".": {
-      "types": "./auth/auth.types.ts",
-      "default": "./auth/auth.types.ts"
+      "types": "./index.ts",
+      "default": "./index.ts"
     },
     "./auth": {
       "types": "./auth/auth.types.ts",
       "default": "./auth/auth.types.ts"
+    },
+    "./user": {
+      "types": "./user/user.types.ts",
+      "default": "./user/user.types.ts"
     }
   }
 }

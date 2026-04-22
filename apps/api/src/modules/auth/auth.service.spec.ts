@@ -1,4 +1,8 @@
-import { ConflictException, UnauthorizedException } from '@nestjs/common'
+import {
+  ConflictException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import bcrypt from 'bcryptjs'
@@ -83,6 +87,19 @@ describe('AuthService', () => {
     expect(result.user.role).toBe(UserRole.VIEWER)
   })
 
+  it('login 在邮箱不存在时抛出 NotFoundException', async () => {
+    prisma.user.findUnique.mockResolvedValue(null)
+
+    await expect(
+      service.login({ email: 'missing@b.com', password: 'password12' }),
+    ).rejects.toBeInstanceOf(NotFoundException)
+
+    const err = await service
+      .login({ email: 'missing@b.com', password: 'password12' })
+      .catch((e: unknown) => e) as NotFoundException
+    expect(err.getResponse()).toBe('该邮箱未注册')
+  })
+
   it('login 在密码错误时抛出 UnauthorizedException', async () => {
     prisma.user.findUnique.mockResolvedValue({
       id: 'u1',
@@ -96,6 +113,11 @@ describe('AuthService', () => {
     await expect(
       service.login({ email: 'a@b.com', password: 'wrong-pass' }),
     ).rejects.toBeInstanceOf(UnauthorizedException)
+
+    const err = await service
+      .login({ email: 'a@b.com', password: 'wrong-pass' })
+      .catch((e: unknown) => e) as UnauthorizedException
+    expect(err.getResponse()).toBe('密码错误')
   })
 
   it('login 在校验通过时颁发 token', async () => {
