@@ -5,10 +5,6 @@
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "baseUrl": ".",
-    "paths": {
-      "@repo/type": ["./src/types/repo-type.ts"]
-    },
     "types": ["node", "jest"],
     "rootDir": "src",
     "outDir": "dist",
