@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { httpClient } from '@/shared/api/http-client'
+import { httpClient } from '@/shared/api'
 
 interface HealthResponse {
   ok: boolean

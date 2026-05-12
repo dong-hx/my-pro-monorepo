@@ -4,8 +4,8 @@ import { Button } from 'antd'
 
 import dayjs from 'dayjs'
 
-import { useAuthStore } from '@/features/auth/store/auth-store'
-import { useHealthQuery } from '@/features/system/api/use-health-query'
+import { useAuthStore } from '@/entities/session'
+import { useHealthQuery } from '@/entities/system'
 
 export const DashboardPage = () => {
   const currentUser = useAuthStore((state) => state.currentUser)

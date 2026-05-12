@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { LoginPage } from '@/features/auth/pages/login-page'
-import { DashboardPage } from '@/features/dashboard/pages/dashboard-page'
-import { UsersPage } from '@/features/users/pages/users-page'
-import { ForbiddenPage } from '@/shared/pages/forbidden-page'
+import { DashboardPage } from '@/pages/dashboard'
+import { ForbiddenPage } from '@/pages/forbidden'
+import { LoginPage } from '@/pages/login'
+import { UsersPage } from '@/pages/users'
 
 import { AuthGuard } from './guards/auth-guard'
 
