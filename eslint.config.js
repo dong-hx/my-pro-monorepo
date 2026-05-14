@@ -11,8 +11,8 @@ export default [
       '**/.turbo/**',
       '**/build/**',
       'pnpm-lock.yaml',
-      // 仅含类型、无 src；在包内单独 lint，避免根配置 projectService 无法纳入该子工程
-      'packages/type/**',
+      // contracts 包在包内单独 lint，避免根配置 projectService 无法纳入该子工程
+      'packages/contracts/**',
     ],
   },
 

@@ -1,4 +1,4 @@
-import type { UserRole } from '../user/user.types.js'
+import type { UserRole } from '../user/types.js'
 
 /** 与 `UserRole` 同义，供 JWT / 鉴权语义使用 */
 export type AuthRole = UserRole

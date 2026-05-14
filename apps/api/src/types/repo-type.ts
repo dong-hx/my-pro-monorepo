@@ -1,6 +1,6 @@
 /**
- * 与 `packages/type` 保持同步（改共享类型时请同步改 `packages/type` 与本文件）。
- * 供 `paths["@repo/type"]` 指向此处，避免 rootDir 外引用与 .d.ts 运行时报错。
+ * 与 `packages/contracts` 保持同步（改共享类型时请同步改 `packages/contracts` 与本文件）。
+ * 供本地编译阶段兜底使用，避免直接跨 `rootDir` 引用 workspace 包类型带来的解析问题。
  */
 export type UserRole = 'admin' | 'editor' | 'viewer'
 

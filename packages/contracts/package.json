@@ -1,5 +1,5 @@
 {
-  "name": "@repo/type",
+  "name": "@repo/contracts",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -22,12 +22,12 @@
       "default": "./index.ts"
     },
     "./auth": {
-      "types": "./auth/auth.types.ts",
-      "default": "./auth/auth.types.ts"
+      "types": "./src/auth/index.ts",
+      "default": "./src/auth/index.ts"
     },
     "./user": {
-      "types": "./user/user.types.ts",
-      "default": "./user/user.types.ts"
+      "types": "./src/user/index.ts",
+      "default": "./src/user/index.ts"
     }
   }
 }

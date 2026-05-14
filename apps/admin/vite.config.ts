@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
-        '@repo/type': path.resolve(__dirname, '../../packages/type/index.ts'),
+        '@repo/contracts': path.resolve(__dirname, '../../packages/contracts/index.ts'),
       },
     },
     build: {

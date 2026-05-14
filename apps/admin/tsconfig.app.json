@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@repo/type": ["../../packages/type/index.ts"]
+      "@repo/contracts": ["../../packages/contracts/index.ts"]
     }
   },
   "include": ["src"]

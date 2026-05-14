@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import type { LoginResponse, UserBrief } from '@repo/type'
+import type { LoginResponse, UserBrief } from '@repo/contracts'
 
 import { setHttpAuthToken } from '@/shared/api/http-client'
 

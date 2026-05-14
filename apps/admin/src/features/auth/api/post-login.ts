@@ -1,4 +1,4 @@
-import type { LoginResponse } from '@repo/type'
+import type { LoginResponse } from '@repo/contracts'
 
 import { httpClient } from '@/shared/api/http-client'
 
