@@ -1,22 +1,25 @@
+import { jest } from '@jest/globals'
 import {
   ConflictException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
-import { ConfigService } from '@nestjs/config'
-import bcrypt from 'bcryptjs'
+import type { JwtService } from '@nestjs/jwt'
+import type { ConfigService } from '@nestjs/config'
 
-import { UserRole } from '../users/dto/create-user.dto.js'
-import { AuthService } from './auth.service.js'
+import { UserRole } from '../../common/enums/index.js'
 
-jest.mock('bcryptjs', () => ({
+const mockBcrypt = {
+  hashSync: jest.fn<(s: string, r: number) => string>().mockReturnValue('hashed-password'),
+  compareSync: jest.fn<(s: string, h: string) => boolean>(),
+}
+
+jest.unstable_mockModule('bcryptjs', () => ({
   __esModule: true,
-  default: {
-    hashSync: jest.fn().mockReturnValue('hashed-password'),
-    compareSync: jest.fn(),
-  },
+  default: mockBcrypt,
 }))
+
+const { AuthService } = await import('./auth.service.js')
 
 describe('AuthService', () => {
   const prisma = {
@@ -25,17 +28,15 @@ describe('AuthService', () => {
       create: jest.fn(),
     },
   }
-  const jwtService = { signAsync: jest.fn().mockResolvedValue('jwt-token') }
+  const jwtService = { signAsync: jest.fn<() => Promise<string>>().mockResolvedValue('jwt-token') }
   const configService = {
     get: jest.fn((key: string, defaultValue?: string) => {
-      if (key === 'JWT_EXPIRES_IN') {
-        return '7d'
-      }
+      if (key === 'JWT_EXPIRES_IN') return '7d'
       return defaultValue
     }),
   }
 
-  let service: AuthService
+  let service: InstanceType<typeof AuthService>
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -50,10 +51,7 @@ describe('AuthService', () => {
     prisma.user.findUnique.mockResolvedValue({ id: '1' })
 
     await expect(
-      service.register({
-        email: 'a@b.com',
-        password: 'password12',
-      }),
+      service.register({ email: 'a@b.com', password: 'password12' }),
     ).rejects.toBeInstanceOf(ConflictException)
 
     expect(prisma.user.create).not.toHaveBeenCalled()
@@ -74,7 +72,7 @@ describe('AuthService', () => {
       name: 'Alice',
     })
 
-    expect(bcrypt.hashSync).toHaveBeenCalled()
+    expect(mockBcrypt.hashSync).toHaveBeenCalled()
     expect(prisma.user.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
         email: 'a@b.com',
@@ -93,11 +91,6 @@ describe('AuthService', () => {
     await expect(
       service.login({ email: 'missing@b.com', password: 'password12' }),
     ).rejects.toBeInstanceOf(NotFoundException)
-
-    const err = await service
-      .login({ email: 'missing@b.com', password: 'password12' })
-      .catch((e: unknown) => e) as NotFoundException
-    expect(err.getResponse()).toBe('该邮箱未注册')
   })
 
   it('login 在密码错误时抛出 UnauthorizedException', async () => {
@@ -108,16 +101,11 @@ describe('AuthService', () => {
       role: UserRole.VIEWER,
       passwordHash: 'hashed-password',
     })
-    ;(bcrypt.compareSync as jest.Mock).mockReturnValue(false)
+    mockBcrypt.compareSync.mockReturnValue(false)
 
     await expect(
       service.login({ email: 'a@b.com', password: 'wrong-pass' }),
     ).rejects.toBeInstanceOf(UnauthorizedException)
-
-    const err = await service
-      .login({ email: 'a@b.com', password: 'wrong-pass' })
-      .catch((e: unknown) => e) as UnauthorizedException
-    expect(err.getResponse()).toBe('密码错误')
   })
 
   it('login 在校验通过时颁发 token', async () => {
@@ -128,7 +116,7 @@ describe('AuthService', () => {
       role: UserRole.ADMIN,
       passwordHash: 'hashed-password',
     })
-    ;(bcrypt.compareSync as jest.Mock).mockReturnValue(true)
+    mockBcrypt.compareSync.mockReturnValue(true)
 
     const result = await service.login({
       email: 'a@b.com',

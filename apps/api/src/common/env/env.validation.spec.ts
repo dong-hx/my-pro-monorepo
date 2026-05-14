@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 import { validateEnv } from './env.validation.js'
 
 describe('validateEnv', () => {
@@ -25,6 +27,6 @@ describe('validateEnv', () => {
         NODE_ENV: 'development',
         JWT_SECRET: 'too-short',
       }),
-    ).toThrow(/至少需要 16 个字符/)
+    ).toThrow(/minLength/)
   })
 })

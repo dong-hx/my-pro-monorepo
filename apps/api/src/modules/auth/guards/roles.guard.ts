@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 
-import { UserRole } from '../../users/dto/create-user.dto.js'
+import { UserRole } from '../../../common/enums/index.js'
 import { ROLES_KEY } from '../decorators/roles.decorator.js'
 import { roleRank } from '../constants/role-rank.js'
 
