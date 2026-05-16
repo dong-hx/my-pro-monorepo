@@ -1,29 +1,14 @@
 import { message } from 'antd'
-import axios, { isAxiosError } from 'axios'
+
+import type { ApiErrorResponse, ApiResponse, RefreshResponse } from '@repo/contracts'
+import axios, { type AxiosRequestConfig, isAxiosError } from 'axios'
+
+import { AUTH_STORAGE_KEYS } from '@/shared/config'
 
 let authToken: string | null = null
 
-/** 供登录 / 登出同步 Bearer，供后续受保护接口使用 */
 export function setHttpAuthToken(token: string | null) {
   authToken = token
-}
-
-function responseBodyMessage(data: unknown): string | null {
-  if (data === null || typeof data !== 'object' || !('message' in data)) {
-    return null
-  }
-  const raw = (data as { message: unknown }).message
-  if (raw === undefined || raw === null) {
-    return null
-  }
-  if (Array.isArray(raw)) {
-    const joined = raw.filter((x) => x != null && String(x).trim() !== '').map(String).join(', ')
-    return joined || null
-  }
-  if (typeof raw === 'string') {
-    return raw.trim() || null
-  }
-  return String(raw)
 }
 
 export const httpClient = axios.create({
@@ -38,15 +23,89 @@ httpClient.interceptors.request.use((config) => {
   return config
 })
 
+/* -------- silent refresh state -------- */
+let refreshing: Promise<string | null> | null = null
+
+const refreshClient = axios.create({
+  baseURL: httpClient.defaults.baseURL,
+  timeout: 10_000,
+})
+
+async function tryRefresh(): Promise<string | null> {
+  const rt = localStorage.getItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN)
+  if (!rt) return null
+
+  try {
+    const { data } = await refreshClient.post<ApiResponse<RefreshResponse>>('auth/refresh', {
+      refreshToken: rt,
+    })
+
+    const payload = data?.code === 0 ? data.data : null
+    if (!payload?.accessToken) return null
+
+    authToken = payload.accessToken
+    localStorage.setItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN, payload.accessToken)
+    return payload.accessToken
+  } catch {
+    return null
+  }
+}
+
+function forceLogout() {
+  authToken = null
+  localStorage.removeItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN)
+  localStorage.removeItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN)
+  localStorage.removeItem(AUTH_STORAGE_KEYS.USER)
+
+  const { pathname } = window.location
+  if (pathname !== '/login' && pathname !== '/register') {
+    window.location.href = '/login'
+  }
+}
+
 httpClient.interceptors.response.use(
-  (response) => response,
-  (error: unknown) => {
-    if (isAxiosError(error) && error.response) {
-      const text = responseBodyMessage(error.response.data)
-      if (text) {
-        void message.error(text)
-      }
+  (response) => {
+    const body = response.data as ApiResponse
+    if (body && body.code === 0) {
+      response.data = body.data
     }
+    return response
+  },
+  async (error: unknown) => {
+    if (!isAxiosError(error) || !error.response || !error.config) {
+      return Promise.reject(error)
+    }
+
+    const originalConfig = error.config as AxiosRequestConfig & { _retried?: boolean }
+
+    if (error.response.status === 401 && !originalConfig._retried) {
+      originalConfig._retried = true
+
+      if (!refreshing) {
+        refreshing = tryRefresh().finally(() => {
+          refreshing = null
+        })
+      }
+      const newToken = await refreshing
+
+      if (newToken) {
+        originalConfig.headers = {
+          ...originalConfig.headers,
+          Authorization: `Bearer ${newToken}`,
+        }
+        return httpClient(originalConfig)
+      }
+
+      forceLogout()
+      return Promise.reject(error)
+    }
+
+    const body = error.response.data as ApiErrorResponse | undefined
+    const text = body?.message
+    if (text) {
+      void message.error(text)
+    }
+
     return Promise.reject(error)
   },
 )
