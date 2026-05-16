@@ -34,6 +34,28 @@ class EnvVariables {
   @IsOptional()
   @IsString()
   JWT_EXPIRES_IN?: string
+
+  @IsOptional()
+  @IsString()
+  SMTP_HOST?: string
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(65535)
+  SMTP_PORT?: number
+
+  @IsOptional()
+  @IsString()
+  SMTP_USER?: string
+
+  @IsOptional()
+  @IsString()
+  SMTP_PASS?: string
+
+  @IsOptional()
+  @IsString()
+  SMTP_FROM?: string
 }
 
 const DEV_FALLBACK_JWT_SECRET =

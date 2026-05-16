@@ -16,3 +16,16 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
+
+/// 邮箱验证码，用于注册和找回密码场景
+model VerificationCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  purpose   String   // "register" | "reset-password"
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([email, purpose, code])
+}

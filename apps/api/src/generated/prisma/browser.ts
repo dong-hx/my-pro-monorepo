@@ -22,3 +22,8 @@ export * from './enums.js';
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model VerificationCode
+ * 邮箱验证码，用于注册和找回密码场景
+ */
+export type VerificationCode = Prisma.VerificationCodeModel

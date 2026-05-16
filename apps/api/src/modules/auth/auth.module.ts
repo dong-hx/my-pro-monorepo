@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport'
 
 import { AuthController } from './auth.controller.js'
 import { AuthService } from './auth.service.js'
+import { VerificationCodeService } from './verification-code.service.js'
 import { JwtStrategy } from './strategies/jwt.strategy.js'
 
 @Module({
@@ -16,13 +17,13 @@ import { JwtStrategy } from './strategies/jwt.strategy.js'
       useFactory: (config: ConfigService) => ({
         secret: config.getOrThrow<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: config.get<string>('JWT_EXPIRES_IN', '7d'),
+          expiresIn: config.get<string>('JWT_EXPIRES_IN', '15m'),
         },
       }),
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, VerificationCodeService, JwtStrategy],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
