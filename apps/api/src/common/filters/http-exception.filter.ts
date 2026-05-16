@@ -8,13 +8,7 @@ import {
 } from '@nestjs/common'
 import type { Response } from 'express'
 
-interface ErrorResponseBody {
-  statusCode: number
-  message: string | string[]
-  error: string
-  timestamp: string
-  path: string
-}
+import type { ApiErrorResponse } from '@repo/contracts'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -26,31 +20,32 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest<{ url: string }>()
 
     let statusCode: number
-    let message: string | string[]
-    let error: string
+    let message: string
 
     if (exception instanceof HttpException) {
       statusCode = exception.getStatus()
       const res = exception.getResponse()
       if (typeof res === 'string') {
         message = res
-        error = exception.name
       } else {
         const obj = res as Record<string, unknown>
-        message = (obj.message as string | string[]) ?? exception.message
-        error = (obj.error as string) ?? exception.name
+        const raw = obj.message
+        message = Array.isArray(raw)
+          ? raw.filter(Boolean).map(String).join(', ')
+          : typeof raw === 'string'
+            ? raw
+            : exception.message
       }
     } else {
       statusCode = HttpStatus.INTERNAL_SERVER_ERROR
       message = '服务器内部错误'
-      error = 'Internal Server Error'
       this.logger.error(exception)
     }
 
-    const body: ErrorResponseBody = {
-      statusCode,
+    const body: ApiErrorResponse = {
+      code: statusCode,
       message,
-      error,
+      data: null,
       timestamp: new Date().toISOString(),
       path: request.url,
     }
