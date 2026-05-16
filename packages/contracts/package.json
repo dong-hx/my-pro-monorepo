@@ -28,6 +28,10 @@
     "./user": {
       "types": "./src/user/index.ts",
       "default": "./src/user/index.ts"
+    },
+    "./common": {
+      "types": "./src/common/index.ts",
+      "default": "./src/common/index.ts"
     }
   }
 }
