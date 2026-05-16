@@ -5,3 +5,6 @@ build/
 package-lock.json
 pnpm-lock.yaml
 public/
+
+# NestJS 源文件含装饰器时，根目录 Prettier 插件链易解析失败；API 包由 ESLint 负责格式
+apps/api/**/*.ts
