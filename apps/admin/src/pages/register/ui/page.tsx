@@ -14,7 +14,7 @@ import {
   useRegisterMutation,
   useSendCodeMutation,
 } from '@/features/auth'
-import { AuthLayout } from '@/shared/ui'
+import { AuthLayout } from '@/widgets/auth-layout'
 
 const emailOnlySchema = z.email({
   error: (iss) => (!iss.input ? '请输入邮箱' : '邮箱格式不正确'),

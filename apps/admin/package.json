@@ -33,7 +33,7 @@
     "zustand": "catalog:"
   },
   "devDependencies": {
-    "@feature-sliced/steiger-plugin": "^0.5.7",
+    "@feature-sliced/steiger-plugin": "^0.5.8",
     "@playwright/test": "catalog:",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",

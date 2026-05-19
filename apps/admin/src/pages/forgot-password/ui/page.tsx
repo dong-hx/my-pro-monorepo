@@ -15,7 +15,7 @@ import {
   useResetPasswordMutation,
   useSendCodeMutation,
 } from '@/features/auth'
-import { AuthLayout } from '@/shared/ui'
+import { AuthLayout } from '@/widgets/auth-layout'
 
 type Step = 'email' | 'reset'
 

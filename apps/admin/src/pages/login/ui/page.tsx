@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useAuthStore } from '@/entities/session'
 import { type LoginSchemaInput, loginSchema, useLoginMutation } from '@/features/auth'
-import { AuthLayout } from '@/shared/ui'
+import { AuthLayout } from '@/widgets/auth-layout'
 
 export const LoginPage = () => {
   const navigate = useNavigate()

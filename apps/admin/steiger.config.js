@@ -7,6 +7,8 @@ export default defineConfig([
     rules: {
       // Admin 项目仍在演进期，避免该规则对小 slice 造成持续噪音。
       'fsd/insignificant-slice': 'off',
+      // 同 slice 必须相对导入，跨 slice/layer 必须绝对导入。
+      'fsd/import-locality': 'error',
     },
   },
   {

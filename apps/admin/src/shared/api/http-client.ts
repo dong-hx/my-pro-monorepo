@@ -3,7 +3,7 @@ import { message } from 'antd'
 import type { ApiErrorResponse, ApiResponse, RefreshResponse } from '@repo/contracts'
 import axios, { type AxiosRequestConfig, isAxiosError } from 'axios'
 
-import { AUTH_STORAGE_KEYS } from '@/shared/config'
+import { AUTH_STORAGE_KEYS } from '../config'
 
 let authToken: string | null = null
 
