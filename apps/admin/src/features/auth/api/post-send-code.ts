@@ -1,4 +1,7 @@
-import type { SendCodeRequest, SendCodeResponse } from '@repo/contracts'
+import type {
+  SendCodeDto as SendCodeRequest,
+  MessageResponseDto as SendCodeResponse,
+} from '@repo/contracts/generated'
 
 import { httpClient } from '@/shared/api'
 

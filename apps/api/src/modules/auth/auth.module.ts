@@ -8,6 +8,9 @@ import { AuthService } from './auth.service.js'
 import { VerificationCodeService } from './verification-code.service.js'
 import { JwtStrategy } from './strategies/jwt.strategy.js'
 
+type JwtExpiresInput = `${number}${'s' | 'm' | 'h' | 'd'}`
+const DEFAULT_JWT_EXPIRES_IN: JwtExpiresInput = '15m'
+
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -17,7 +20,10 @@ import { JwtStrategy } from './strategies/jwt.strategy.js'
       useFactory: (config: ConfigService) => ({
         secret: config.getOrThrow<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: config.get<string>('JWT_EXPIRES_IN', '15m'),
+          expiresIn: config.get<JwtExpiresInput>(
+            'JWT_EXPIRES_IN',
+            DEFAULT_JWT_EXPIRES_IN,
+          ),
         },
       }),
     }),

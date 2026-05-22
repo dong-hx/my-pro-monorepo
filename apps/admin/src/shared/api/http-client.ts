@@ -1,6 +1,7 @@
 import { message } from 'antd'
 
-import type { ApiErrorResponse, ApiResponse, RefreshResponse } from '@repo/contracts'
+import type { ApiErrorResponse, ApiResponse } from '@repo/contracts'
+import type { RefreshResponseDto as RefreshResponse } from '@repo/contracts/generated'
 import axios, { type AxiosRequestConfig, isAxiosError } from 'axios'
 
 import { AUTH_STORAGE_KEYS } from '../config'

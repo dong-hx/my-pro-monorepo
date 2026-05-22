@@ -2,6 +2,8 @@ import 'reflect-metadata'
 
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { apiReference } from '@scalar/nestjs-api-reference'
 
 import { AppModule } from './app.module.js'
 import { PrismaService } from './common/database/prisma.service.js'
@@ -10,6 +12,26 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  const config = new DocumentBuilder()
+    .setTitle('独立站后台管理 API')
+    .setDescription('独立站后台管理 API 文档')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build()
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('docs', app, document, {
+    ui: false,
+    jsonDocumentUrl: 'docs-json',
+  })
+  app.use(
+    '/docs',
+    apiReference({
+      url: '/docs-json',
+      theme: 'purple',
+      layout: 'modern',
+      darkMode: true,
+    }),
+  )
   app.setGlobalPrefix('api')
   app.useGlobalFilters(new AllExceptionsFilter())
   app.useGlobalInterceptors(new TransformInterceptor())

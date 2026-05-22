@@ -11,21 +11,28 @@ import bcrypt from 'bcryptjs'
 import { PrismaService } from '../../common/database/prisma.service.js'
 import { UserRole } from '../../common/enums/index.js'
 import type {
-  AuthUserView,
-  JwtPayload,
-  LoginResponse,
-  MessageResponse,
-  RefreshResponse,
-  VerificationPurpose,
-} from '@repo/contracts'
+  AuthUserViewDto,
+  LoginResponseDto,
+  MessageResponseDto,
+  RefreshResponseDto,
+  SendCodeDto,
+} from '@repo/contracts/generated'
 import type { LoginDto } from './dto/login.dto.js'
 import type { RegisterDto } from './dto/register.dto.js'
 import type { ResetPasswordDto } from './dto/reset-password.dto.js'
+import type { JwtPayload } from './types/jwt-payload.type.js'
 import { parseJwtExpiresToSeconds } from './utils/parse-jwt-expires.js'
 import { VerificationCodeService } from './verification-code.service.js'
 
 const BCRYPT_ROUNDS = 12
-const REFRESH_TOKEN_EXPIRES = '30d'
+type JwtExpiresInput = `${number}${'s' | 'm' | 'h' | 'd'}`
+const DEFAULT_JWT_EXPIRES_IN: JwtExpiresInput = '15m'
+const REFRESH_TOKEN_EXPIRES: JwtExpiresInput = '30d'
+type VerificationPurpose = SendCodeDto['purpose']
+type AuthUserView = AuthUserViewDto
+type LoginResponse = LoginResponseDto
+type RefreshResponse = RefreshResponseDto
+type MessageResponse = MessageResponseDto
 
 @Injectable()
 export class AuthService {
@@ -128,7 +135,10 @@ export class AuthService {
       throw new UnauthorizedException('用户不存在')
     }
 
-    const expiresInConfig = this.configService.get<string>('JWT_EXPIRES_IN', '15m')
+    const expiresInConfig = this.configService.get<JwtExpiresInput>(
+      'JWT_EXPIRES_IN',
+      DEFAULT_JWT_EXPIRES_IN,
+    )
     const expiresIn = parseJwtExpiresToSeconds(expiresInConfig)
 
     const newPayload: JwtPayload = {
@@ -192,7 +202,10 @@ export class AuthService {
   }
 
   private async buildLoginResponse(user: AuthUserView): Promise<LoginResponse> {
-    const expiresInConfig = this.configService.get<string>('JWT_EXPIRES_IN', '15m')
+    const expiresInConfig = this.configService.get<JwtExpiresInput>(
+      'JWT_EXPIRES_IN',
+      DEFAULT_JWT_EXPIRES_IN,
+    )
     const expiresIn = parseJwtExpiresToSeconds(expiresInConfig)
 
     const accessPayload: JwtPayload = {

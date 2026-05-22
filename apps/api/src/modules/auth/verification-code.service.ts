@@ -8,12 +8,13 @@ import crypto from 'node:crypto'
 
 import { PrismaService } from '../../common/database/prisma.service.js'
 import { MailerService } from '../../common/mailer/mailer.service.js'
-import type { VerificationPurpose } from '@repo/contracts'
+import type { SendCodeDto } from '@repo/contracts/generated'
 
 const CODE_LENGTH = 6
 const CODE_TTL_MINUTES = 10
 const CODE_COOLDOWN_SECONDS = 60
 const CLEANUP_INTERVAL_MS = 60 * 60 * 1000
+type VerificationPurpose = SendCodeDto['purpose']
 
 @Injectable()
 export class VerificationCodeService implements OnModuleInit {

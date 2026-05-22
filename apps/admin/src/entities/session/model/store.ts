@@ -1,8 +1,10 @@
-import type { LoginResponse, UserBrief } from '@repo/contracts'
+import type { LoginResponseDto as LoginResponse } from '@repo/contracts/generated'
 import { create } from 'zustand'
 
 import { setHttpAuthToken } from '@/shared/api'
 import { AUTH_STORAGE_KEYS } from '@/shared/config'
+
+import type { UserBrief } from './types'
 
 function readUser(): UserBrief | null {
   try {

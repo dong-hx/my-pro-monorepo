@@ -6,10 +6,12 @@
   "sideEffects": false,
   "types": "./index.ts",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "openapi:generate": "openapi-ts -f openapi-ts.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",
+    "@hey-api/openapi-ts": "^0.97.2",
     "@repo/typescript-config": "workspace:*",
     "eslint": "catalog:",
     "eslint-config-prettier": "catalog:",
@@ -21,17 +23,13 @@
       "types": "./index.ts",
       "default": "./index.ts"
     },
-    "./auth": {
-      "types": "./src/auth/index.ts",
-      "default": "./src/auth/index.ts"
-    },
-    "./user": {
-      "types": "./src/user/index.ts",
-      "default": "./src/user/index.ts"
-    },
     "./common": {
       "types": "./src/common/index.ts",
       "default": "./src/common/index.ts"
+    },
+    "./generated": {
+      "types": "./src/generated/types.gen.ts",
+      "default": "./src/generated/types.gen.ts"
     }
   }
 }

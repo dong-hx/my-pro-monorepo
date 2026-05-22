@@ -1,4 +1,7 @@
-import type { MessageResponse, ResetPasswordRequest } from '@repo/contracts'
+import type {
+  MessageResponseDto as MessageResponse,
+  ResetPasswordDto as ResetPasswordRequest,
+} from '@repo/contracts/generated'
 
 import { httpClient } from '@/shared/api'
 

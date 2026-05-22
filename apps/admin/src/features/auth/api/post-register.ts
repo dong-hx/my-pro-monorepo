@@ -1,4 +1,7 @@
-import type { LoginResponse, RegisterRequest } from '@repo/contracts'
+import type {
+  LoginResponseDto as LoginResponse,
+  RegisterDto as RegisterRequest,
+} from '@repo/contracts/generated'
 
 import { httpClient } from '@/shared/api'
 
