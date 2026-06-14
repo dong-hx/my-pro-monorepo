@@ -27,9 +27,12 @@ catalogs:
     '@types/node': '^24.10.1'
 
     'vite': '^7.1.11'
-    'tailwindcss': '^4.2.1'
-    '@tailwindcss/vite': '^4.2.1'
+    'tailwindcss': '^4.3.0'
+    '@tailwindcss/vite': '^4.3.0'
+    '@tailwindcss/postcss': '^4.3.0'
     '@vitejs/plugin-react': '^5.1.1'
+
+    'next': '^16.2.9'
 
     'axios': '^1.13.5'
     'dayjs': '^1.11.13'
