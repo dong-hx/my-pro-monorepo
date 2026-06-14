@@ -1,0 +1,1 @@
+export const SCROLL_TO_TOP_THRESHOLD = 400
