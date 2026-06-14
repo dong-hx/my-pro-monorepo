@@ -1,0 +1,252 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens — Serene Pet Lifestyle (Soft Premium / Quiet Luxury)
+ */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-display);
+}
+
+@theme {
+  /* 背景与中性 */
+  --color-cream: #faf9f6;
+  --color-sand: #f4f3f1;
+  --color-sand-dim: #efeeeb;
+  --color-stone: #c3c8c2;
+  --color-soft-clay: #d9c5b2;
+  --color-ink: #2d4739;
+  --color-muted: #434844;
+  --color-outline: #737873;
+
+  /* 品牌 */
+  --color-sage: #7c8a7f;
+  --color-sage-dark: #525f55;
+  --color-taupe: #a69b8f;
+  --color-clay: #e07a5f;
+  --color-clay-dark: #b65a41;
+
+  /* 状态 */
+  --color-success: #546258;
+  --color-danger: #ba1a1a;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-card: 1rem;
+  --radius-xl: 1.5rem;
+
+  --shadow-soft: 0 4px 20px rgb(45 71 57 / 0.05);
+  --shadow-lift: 0 8px 28px rgb(45 71 57 / 0.08);
+
+  /* Radix 动画 */
+  --animate-fade-in: fade-in 180ms ease-out;
+  --animate-fade-out: fade-out 150ms ease-in;
+  --animate-slide-in-right: slide-in-right 240ms cubic-bezier(0.32, 0.72, 0, 1);
+  --animate-slide-out-right: slide-out-right 200ms ease-in;
+  --animate-accordion-down: accordion-down 220ms ease-out;
+  --animate-accordion-up: accordion-up 200ms ease-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@layer components {
+  /* 标签 / 元数据 — label-caps */
+  .label-caps {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .home-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-clay);
+  }
+
+  .home-kicker {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .home-link-caps {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 150ms ease;
+  }
+
+  .home-link-caps:hover {
+    color: var(--color-clay);
+  }
+
+  /* 区块标题 / 页面标题 */
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1.15;
+    color: var(--color-ink);
+  }
+
+  @media (min-width: 1024px) {
+    .section-title {
+      font-size: 1.875rem;
+    }
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    line-height: 1.1;
+    color: var(--color-ink);
+  }
+
+  @media (min-width: 1024px) {
+    .page-title {
+      font-size: 2.5rem;
+    }
+  }
+
+  .section-shell {
+    margin-inline: auto;
+    max-width: 80rem;
+    padding-inline: 1rem;
+    padding-block: 3.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .section-shell {
+      padding-inline: 2rem;
+      padding-block: 4rem;
+    }
+  }
+
+  /* 筛选 Chip / 下拉触发器 */
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--color-soft-clay) 55%, transparent);
+    background-color: var(--color-sand);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .filter-chip:hover {
+    background-color: var(--color-sand-dim);
+  }
+
+  .filter-chip-active {
+    border-color: var(--color-sage);
+    background-color: var(--color-sage);
+    color: #ffffff;
+  }
+
+  /* 选项 Pill（PDP 变体等） */
+  .option-pill {
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--color-soft-clay) 55%, transparent);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .option-pill:hover {
+    border-color: color-mix(in srgb, var(--color-sage) 45%, transparent);
+  }
+
+  .option-pill-active {
+    border-color: var(--color-sage);
+    background-color: var(--color-sage);
+    color: #ffffff;
+  }
+
+  .home-icon-line {
+    stroke-width: 1.25;
+  }
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+}
